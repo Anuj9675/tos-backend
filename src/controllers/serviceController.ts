@@ -31,3 +31,20 @@ export const getServices = async (req: Request, res: Response) => {
         }
     }
 };
+
+export const deleteService = async (req: Request, res: Response) => {
+    try {
+        const deletedService = await Service.findByIdAndDelete(req.params.id);
+        if (!deletedService) {
+            res.status(404).json({ error: 'Service not found' });
+        } else {
+            res.status(200).json(deletedService);
+        }
+    } catch (error: unknown) {
+        if (isErrorWithMessage(error)) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
+    }
+}

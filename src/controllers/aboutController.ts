@@ -31,3 +31,20 @@ export const getAbout = async (req: Request, res: Response) => {
         }
     }
 };
+
+export const deleteAbout = async (req: Request, res: Response) => { 
+    try {
+        const deletedAbout = await About.findByIdAndDelete(req.params.id);
+        if (!deletedAbout) {
+            res.status(404).json({ error: 'About not found' });
+        } else {
+            res.status(200).json(deletedAbout);
+        }
+    } catch (error: unknown) {
+        if (isErrorWithMessage(error)) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });                       
+        }   
+    }
+};
